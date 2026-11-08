@@ -1,0 +1,923 @@
+/* ==========================================================================
+   OCEAN LIFE - EXPLORER & PROTECT OUR OCEANS STYLESHEET (css/explorer.css)
+   Section A: Ocean Explorer Environments
+   Section B: Ocean Pollution & Before-and-After Slider
+   Section C: Drag & Drop Interactive Sorting Game
+   Section D: Save the Ocean Pledge & LocalStorage Challenge
+   ========================================================================== */
+
+.explorer-page-container {
+  padding-top: calc(var(--nav-height) + 2rem);
+  padding-bottom: 6rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* ==========================================================================
+   SECTION A: INTERACTIVE OCEAN ENVIRONMENTS
+   ========================================================================== */
+.environments-section {
+  margin-bottom: 6.5rem;
+}
+
+.env-tabs-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+
+.env-tab-btn {
+  padding: 0.75rem 1.6rem;
+  border-radius: var(--border-radius-full);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-glass);
+  color: var(--text-light);
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.env-tab-btn:hover {
+  background: rgba(0, 240, 255, 0.1);
+  border-color: rgba(0, 240, 255, 0.3);
+  color: #ffffff;
+}
+
+.env-tab-btn.active {
+  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-turquoise) 100%);
+  color: var(--bg-abyss);
+  border-color: transparent;
+  box-shadow: 0 4px 20px rgba(0, 240, 255, 0.35);
+  font-weight: 700;
+}
+
+.env-showcase-panel {
+  background: linear-gradient(180deg, rgba(6, 25, 61, 0.8) 0%, rgba(3, 14, 36, 0.95) 100%);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--glass-shadow);
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  min-height: 480px;
+}
+
+.env-image-box {
+  position: relative;
+  overflow: hidden;
+  min-height: 380px;
+}
+
+.env-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.env-image-box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 60%, rgba(6, 25, 61, 0.95) 100%);
+}
+
+.env-details-box {
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.env-title {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.6rem;
+}
+
+.env-condition-badges {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.env-badge-item {
+  background: rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: var(--border-radius-sm);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+  color: var(--accent-cyan);
+}
+
+.env-desc-text {
+  font-size: 1rem;
+  color: var(--text-light);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.env-creatures-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.env-creatures-title {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  color: var(--accent-turquoise);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.env-creatures-names {
+  font-size: 0.95rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   SECTION B: OCEAN POLLUTION & BEFORE/AFTER COMPARISON SLIDER
+   ========================================================================== */
+.pollution-section {
+  margin-bottom: 6.5rem;
+}
+
+.pollution-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.pollution-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--border-radius-md);
+  padding: 1.8rem;
+  backdrop-filter: blur(14px);
+  transition: var(--transition-smooth);
+}
+
+.pollution-card:hover {
+  border-color: rgba(255, 61, 113, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.pollution-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(255, 61, 113, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff3d71;
+  margin-bottom: 1rem;
+}
+
+.pollution-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.pollution-card-text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Before and After Interactive Slider */
+.comparison-container-wrapper {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--border-radius-lg);
+  padding: 2.5rem;
+  backdrop-filter: blur(16px);
+  margin-bottom: 3rem;
+}
+
+.comparison-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.comparison-slider-container {
+  position: relative;
+  width: 100%;
+  height: 460px;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  user-select: none;
+  border: 1px solid var(--border-glass);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+}
+
+.comparison-image-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+.comparison-image-before {
+  /* Polluted Reef */
+  background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1400&q=80');
+  filter: grayscale(40%) contrast(1.1) brightness(0.85);
+}
+
+.comparison-image-after {
+  /* Pristine Vibrant Coral Reef */
+  background-image: url('https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=1400&q=80');
+  width: 50%; /* initial cut */
+  overflow: hidden;
+  border-right: 3px solid var(--accent-cyan);
+  box-shadow: 4px 0 20px rgba(0, 240, 255, 0.4);
+}
+
+.comparison-badge {
+  position: absolute;
+  top: 1.5rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--border-radius-full);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  z-index: 5;
+}
+
+.badge-polluted {
+  right: 1.5rem;
+  background: rgba(255, 61, 113, 0.85);
+  color: #ffffff;
+  border: 1px solid #ff3d71;
+}
+
+.badge-healthy {
+  left: 1.5rem;
+  background: rgba(0, 230, 118, 0.85);
+  color: var(--bg-abyss);
+  border: 1px solid #00e676;
+}
+
+/* Draggable Handle */
+.comparison-slider-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 44px;
+  margin-left: -22px;
+  cursor: ew-resize;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.handle-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  color: var(--bg-abyss);
+  border: 3px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
+  transition: transform 0.2s ease;
+}
+
+.handle-circle:hover {
+  transform: scale(1.15);
+}
+
+/* ==========================================================================
+   SECTION C: INTERACTIVE POLLUTION SORTING GAME
+   ========================================================================== */
+.game-section {
+  margin-bottom: 6.5rem;
+}
+
+.game-board-container {
+  background: linear-gradient(180deg, rgba(6, 25, 61, 0.9) 0%, rgba(2, 11, 28, 0.98) 100%);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--border-radius-lg);
+  padding: 2.5rem;
+  box-shadow: var(--glass-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Game Status Bar */
+.game-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-glass);
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.game-stats-group {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.game-stat-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.game-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.game-stat-val {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent-cyan);
+}
+
+/* Progress bar inside game */
+.game-progress-wrapper {
+  flex: 1;
+  max-width: 320px;
+}
+
+.game-progress-bar-bg {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-full);
+  overflow: hidden;
+  margin-top: 0.35rem;
+}
+
+.game-progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-turquoise), var(--accent-cyan));
+  border-radius: var(--border-radius-full);
+  transition: width 0.4s ease;
+}
+
+/* Draggable Items Pool Area */
+.game-waste-pool {
+  background: rgba(3, 14, 36, 0.65);
+  border: 1px dashed var(--border-glass);
+  border-radius: var(--border-radius-md);
+  padding: 1.5rem;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+
+.draggable-waste-item {
+  background: rgba(10, 46, 92, 0.7);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--border-radius-md);
+  padding: 0.75rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: grab;
+  user-select: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.draggable-waste-item:hover {
+  transform: translateY(-4px) scale(1.05);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 8px 25px rgba(0, 240, 255, 0.3);
+}
+
+.draggable-waste-item:active {
+  cursor: grabbing;
+}
+
+.draggable-waste-item.dragging {
+  opacity: 0.4;
+  transform: scale(0.95);
+}
+
+.draggable-waste-item .waste-emoji {
+  font-size: 1.4rem;
+}
+
+/* Category Drop Bins */
+.game-bins-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.game-drop-bin {
+  background: rgba(6, 25, 61, 0.7);
+  border: 2px dashed rgba(255, 255, 255, 0.15);
+  border-radius: var(--border-radius-lg);
+  padding: 2rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: var(--transition-smooth);
+  min-height: 220px;
+}
+
+.game-drop-bin.drag-over {
+  border-color: var(--accent-cyan);
+  background: rgba(0, 240, 255, 0.12);
+  transform: scale(1.03);
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+}
+
+.bin-icon-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+}
+
+.bin-plastics .bin-icon-circle { background: rgba(0, 240, 255, 0.15); color: var(--accent-cyan); }
+.bin-hazardous .bin-icon-circle { background: rgba(255, 61, 113, 0.15); color: #ff3d71; }
+.bin-glass-metal .bin-icon-circle { background: rgba(255, 171, 0, 0.15); color: #ffab00; }
+.bin-organic .bin-icon-circle { background: rgba(0, 230, 118, 0.15); color: #00e676; }
+
+.bin-name {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.35rem;
+}
+
+.bin-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* Game Win / Results Modal */
+.game-result-modal {
+  position: absolute;
+  inset: 0;
+  background: rgba(1, 8, 20, 0.94);
+  backdrop-filter: blur(18px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.game-result-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.game-result-badge {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  animation: float 3s infinite ease-in-out;
+}
+
+.game-result-title {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.game-result-score-text {
+  font-size: 1.1rem;
+  color: var(--accent-cyan);
+  margin-bottom: 2rem;
+}
+
+/* ==========================================================================
+   SECTION D: SAVE THE OCEAN (PLEDGE CHALLENGE & LOCALSTORAGE)
+   ========================================================================== */
+.pledge-section {
+  margin-bottom: 4rem;
+}
+
+.pledge-card-wrapper {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--border-radius-lg);
+  padding: 3rem 2.5rem;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--glass-shadow);
+}
+
+.pledge-meter-box {
+  margin-bottom: 2.5rem;
+  background: rgba(3, 14, 36, 0.7);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--border-radius-md);
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.pledge-meter-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.pledge-meter-title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.pledge-rank-badge {
+  font-size: 0.85rem;
+  color: var(--accent-cyan);
+  font-weight: 600;
+}
+
+.pledge-checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.pledge-checkbox-card {
+  background: rgba(6, 25, 61, 0.7);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--border-radius-md);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.pledge-checkbox-card:hover {
+  border-color: var(--accent-cyan);
+  background: rgba(0, 240, 255, 0.08);
+}
+
+.pledge-checkbox-card.checked {
+  border-color: var(--accent-cyan);
+  background: rgba(0, 240, 255, 0.12);
+}
+
+.pledge-checkbox {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: var(--transition-smooth);
+}
+
+.pledge-checkbox-card.checked .pledge-checkbox {
+  background-color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  color: var(--bg-abyss);
+}
+
+.pledge-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.pledge-title {
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: #ffffff;
+  margin-bottom: 0.2rem;
+}
+
+.pledge-sub {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+/* Responsive System */
+@media (max-width: 1024px) {
+  .env-showcase-panel {
+    grid-template-columns: 1fr;
+  }
+  .env-image-box {
+    min-height: 320px;
+  }
+  .env-image-box::after {
+    background: linear-gradient(180deg, transparent 50%, rgba(6, 25, 61, 0.98) 100%);
+  }
+  .pollution-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+  .game-bins-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .pledge-checklist-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .explorer-page-container {
+    padding-top: calc(var(--nav-height) + 1.25rem);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 4rem;
+  }
+  .env-tabs-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-bottom: 1.5rem;
+  }
+  .env-tabs-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .env-tab-btn {
+    flex-shrink: 0;
+    padding: 0.6rem 1.15rem;
+    font-size: 0.88rem;
+  }
+  .env-showcase-panel {
+    min-height: auto;
+  }
+  .env-image-box {
+    min-height: 220px;
+    height: 220px;
+  }
+  .env-details-box {
+    padding: 1.6rem 1.25rem;
+  }
+  .env-title {
+    font-size: 1.55rem;
+  }
+  .env-condition-badges {
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+  }
+  .env-desc-text {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .pollution-grid {
+    grid-template-columns: 1fr;
+  }
+  .comparison-container-wrapper {
+    padding: 1.5rem 1rem;
+  }
+  .comparison-slider-container {
+    height: 270px;
+  }
+  .comparison-badge {
+    font-size: 0.72rem;
+    padding: 0.35rem 0.75rem;
+    top: 1rem;
+  }
+  .badge-healthy { left: 0.75rem; }
+  .badge-polluted { right: 0.75rem; }
+  .handle-circle {
+    width: 38px;
+    height: 38px;
+  }
+
+  /* Game Mobile Optimization */
+  .game-board-container {
+    padding: 1.5rem 1rem;
+  }
+  .game-header-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.15rem;
+  }
+  .game-stats-group {
+    justify-content: space-around;
+    width: 100%;
+  }
+  .game-progress-wrapper {
+    max-width: 100%;
+  }
+  .game-waste-pool {
+    padding: 1rem;
+    gap: 0.75rem;
+    min-height: 120px;
+  }
+  .draggable-waste-item {
+    padding: 0.55rem 0.9rem;
+    font-size: 0.88rem;
+    touch-action: none;
+  }
+  .game-bins-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+  }
+  .game-drop-bin {
+    min-height: 150px;
+    padding: 1.25rem 0.75rem;
+  }
+  .bin-icon-circle {
+    width: 44px;
+    height: 44px;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+  .bin-name {
+    font-size: 0.95rem;
+  }
+  .bin-hint {
+    display: none;
+  }
+
+  /* Pledge Mobile Optimization */
+  .pledge-card-wrapper {
+    padding: 1.6rem 1.25rem;
+  }
+  .pledge-meter-box {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+  .pledge-checkbox-card {
+    padding: 1rem 1.15rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-result-title {
+    font-size: 1.6rem;
+  }
+  .game-stat-val {
+    font-size: 1.3rem;
+  }
+}
+
+/* ==========================================================================
+   EXPLORER & PROTECT OUR OCEANS - LIGHT MODE PALETTE
+   ========================================================================== */
+[data-theme="light"] .env-tab-btn {
+  background: rgba(255, 255, 255, 0.88);
+  color: #082d52;
+  border-color: rgba(0, 143, 163, 0.25);
+}
+
+[data-theme="light"] .env-showcase-panel {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(238, 248, 255, 0.98) 100%);
+  border-color: rgba(0, 143, 163, 0.22);
+}
+
+[data-theme="light"] .env-image-box::after {
+  background: linear-gradient(90deg, transparent 60%, rgba(255, 255, 255, 0.95) 100%);
+}
+
+[data-theme="light"] .env-desc,
+[data-theme="light"] .pollution-card-desc {
+  color: var(--text-muted);
+}
+
+[data-theme="light"] .pollution-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(240, 248, 255, 0.96) 100%);
+  border-color: rgba(0, 143, 163, 0.22);
+  box-shadow: 0 10px 30px rgba(0, 60, 100, 0.07);
+}
+
+[data-theme="light"] .comparison-slider-container {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 143, 163, 0.22);
+}
+
+[data-theme="light"] .game-arena-box {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(235, 248, 255, 0.98) 100%);
+  border-color: rgba(0, 143, 163, 0.22);
+}
+
+[data-theme="light"] .game-water-pool {
+  background: radial-gradient(circle at 50% 50%, rgba(0, 143, 163, 0.08) 0%, rgba(240, 249, 255, 0.9) 100%);
+  border-color: rgba(0, 143, 163, 0.25);
+}
+
+[data-theme="light"] .game-trash-item {
+  background: rgba(255, 255, 255, 0.95);
+  color: #021a32;
+  border-color: rgba(0, 143, 163, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 60, 100, 0.1);
+}
+
+[data-theme="light"] .game-drop-bin {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(0, 143, 163, 0.25);
+}
+
+[data-theme="light"] .bin-name {
+  color: var(--text-white);
+}
+
+[data-theme="light"] .bin-hint {
+  color: var(--text-muted);
+}
+
+[data-theme="light"] .pledge-card-wrapper {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(235, 248, 255, 0.96) 100%);
+  border-color: rgba(0, 143, 163, 0.22);
+}
+
+[data-theme="light"] .pledge-checkbox-card {
+  background: rgba(245, 251, 255, 0.9);
+  border-color: rgba(0, 143, 163, 0.22);
+}
+
+[data-theme="light"] .pledge-checkbox-card:hover {
+  background: rgba(235, 246, 255, 1);
+}
+
+[data-theme="light"] .pledge-meter-box {
+  background: rgba(240, 249, 255, 0.95);
+  border-color: rgba(0, 143, 163, 0.22);
+}
+
+/* ==========================================================================
+   EXPLORER & PROTECT OUR OCEANS - ARABIC RTL RULES
+   ========================================================================== */
+[dir="rtl"] .env-image-box::after {
+  background: linear-gradient(270deg, transparent 60%, rgba(6, 25, 61, 0.95) 100%);
+}
+
+[data-theme="light"][dir="rtl"] .env-image-box::after {
+  background: linear-gradient(270deg, transparent 60%, rgba(255, 255, 255, 0.95) 100%);
+}
+
+[dir="rtl"] .env-details-box,
+[dir="rtl"] .pollution-card,
+[dir="rtl"] .pledge-card-wrapper,
+[dir="rtl"] .game-stat-box {
+  text-align: right;
+}
+
+[dir="rtl"] .pledge-custom-check {
+  margin-right: 0;
+  margin-left: 0.85rem;
+}
+

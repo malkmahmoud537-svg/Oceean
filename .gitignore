@@ -1,0 +1,19 @@
+# Dependencies (never upload to git or server directly)
+node_modules/
+.npm/
+
+# Environment and logs
+*.log
+.env
+.env.local
+
+# Editor directories
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# SQLite database journals
+ocean.sqlite-journal
+*.sqlite-journal
+

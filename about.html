@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About The Ocean – THE WORLD BENEATH THE WAVES | OCEAN LIFE</title>
+  <meta name="description"
+    content="Explore the five global oceans, the vertical ocean depth zones, and how marine systems regulate climate and oxygen for planet Earth.">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/about.css">
+
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f0ff'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z'/></svg>">
+</head>
+
+<body>
+
+  <!-- Persistent Route Loading Progress Bar -->
+  <div id="route-progress-bar"></div>
+
+  <!-- Permanent Animated Underwater Background -->
+  <div id="underwater-container">
+    <canvas id="underwater-canvas"></canvas>
+    <div class="water-caustics-overlay"></div>
+    <div class="underwater-vignette"></div>
+  </div>
+
+  <div id="app-wrapper">
+
+    <!-- Fixed Glassmorphic Navigation Bar -->
+    <header class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M2 12h20M2 17h20M2 7h20"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </div>
+          <div>
+            <span class="brand-text" data-i18n="nav_brand_title">OCEAN LIFE</span>
+            <span class="brand-tag" data-i18n="nav_brand_tag">Explore The Deep</span>
+          </div>
+        </a>
+
+        <nav>
+          <ul class="nav-menu" id="nav-menu">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link home-icon-link" title="Return to Home">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span data-i18n="nav_home">Home</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="about.html" class="nav-link active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span data-i18n="nav_about">About Ocean</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="marine-life.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M12 2a10 10 0 0 0-7.07 17.07C7.4 21.6 12 22 12 22s4.6-.4 7.07-2.93A10 10 0 0 0 12 2z"></path>
+                  <path d="M12 6v6l4 2"></path>
+                </svg>
+                <span data-i18n="nav_marine">Marine Life</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="explorer.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <polygon points="12 2 19 21 12 17 5 21 12 2"></polygon>
+                </svg>
+                <span data-i18n="nav_explorer">Ocean Explorer</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="login.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span data-i18n="nav_login">Login</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <button id="sound-toggle-btn" class="sound-toggle-btn" aria-label="Toggle ambient underwater sound">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+              <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path>
+              <path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+              <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+          </button>
+
+          <!-- Theme Mode Switcher -->
+          <button class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle Light/Dark Theme">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+
+          <!-- Language Switcher (EN <-> AR) -->
+          <button class="lang-toggle-btn" aria-label="Toggle language" title="Switch Language">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            <span class="lang-btn-label">عربي</span>
+          </button>
+
+          <button class="mobile-nav-toggle" aria-label="Open mobile menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+      <div class="about-page-container">
+
+        <!-- INTRODUCTORY SECTION -->
+        <div class="section-header">
+          <span class="section-tag" data-i18n="about_tag">Oceanographic Overview</span>
+          <h1 class="section-title" data-i18n="about_title">THE WORLD BENEATH THE WAVES</h1>
+          <p class="section-desc" data-i18n="about_desc">Vast, deep, and essential to all terrestrial life, our global ocean is a single, interconnected liquid biosphere holding 97% of Earth's water.</p>
+        </div>
+
+        <!-- HERO SPLIT: LARGE HIGH-QUALITY PHOTOGRAPH + IN-DEPTH TEXT PANELS -->
+        <section class="about-hero-section">
+          <div class="about-image-wrapper">
+            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80"
+              alt="Cinematic underwater coral reef and sun rays">
+            <div class="about-image-badge">
+              <div class="about-image-badge-title" data-i18n="about_image_title">The Planetary Cradle</div>
+              <div class="about-image-badge-sub" data-i18n="about_image_sub">3.8 Billion Years of Continuous Marine Evolution</div>
+            </div>
+          </div>
+
+          <div class="about-text-content">
+            <div class="about-info-item">
+              <div class="about-info-header">
+                <div class="about-info-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                    <path d="M2 12h20"></path>
+                  </svg>
+                </div>
+                <h3 class="about-info-title" data-i18n="about_q1_title">What is the Ocean?</h3>
+              </div>
+              <p class="about-info-desc" data-i18n="about_q1_desc">The ocean is a continuous body of saltwater covering 361 million square kilometers (71%) of the planet. It comprises over 1.33 billion cubic kilometers of water with an average salinity of 35 parts per thousand, forming Earth’s largest thermal heat reservoir.</p>
+            </div>
+
+            <div class="about-info-item">
+              <div class="about-info-header">
+                <div class="about-info-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                  </svg>
+                </div>
+                <h3 class="about-info-title" data-i18n="about_q2_title">Why are Oceans Important?</h3>
+              </div>
+              <p class="about-info-desc" data-i18n="about_q2_desc">Every second breath we take comes from the ocean. Marine phytoplankton (prochlorococcus and diatoms) produce 50% to 80% of the world's atmospheric oxygen. The ocean also provides food security and livelihood for over 3 billion people worldwide.</p>
+            </div>
+
+            <div class="about-info-item">
+              <div class="about-info-header">
+                <div class="about-info-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
+                  </svg>
+                </div>
+                <h3 class="about-info-title" data-i18n="about_q3_title">How Oceans Regulate Climate</h3>
+              </div>
+              <p class="about-info-desc" data-i18n="about_q3_desc">The oceans absorb 90% of excess anthropogenic heat trapped by greenhouse gases and capture approximately 30% of global carbon emissions. The Global Ocean Conveyor Belt (thermohaline circulation) circulates warm water from the equator to poles, moderating continental weather.</p>
+            </div>
+
+            <div class="about-info-item">
+              <div class="about-info-header">
+                <div class="about-info-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <path
+                      d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                  </svg>
+                </div>
+                <h3 class="about-info-title" data-i18n="about_q4_title">What Lives Beneath?</h3>
+              </div>
+              <p class="about-info-desc" data-i18n="about_q4_desc">Scientists estimate between 700,000 and 1 million eukaryotic marine species inhabit our oceans, yet less than 25% have been formally described. Life spans from microscopic zooplankton to the colossal 190-ton blue whale.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- FIVE CLICKABLE OCEAN CARDS -->
+        <section class="oceans-grid-section">
+          <div class="section-header">
+            <span class="section-tag" data-i18n="oceans_section_tag">Global Ocean Basins</span>
+            <h2 class="section-title" data-i18n="oceans_section_title">THE FIVE OCEANS</h2>
+            <p class="section-desc" data-i18n="oceans_section_desc">Click any ocean card to inspect its geographic boundaries, extreme trenches, endemic species, and marine conditions.</p>
+          </div>
+
+          <div class="oceans-grid">
+            <!-- 1. Pacific -->
+            <div class="ocean-card" data-ocean="pacific">
+              <div class="ocean-card-thumb">
+                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80"
+                  alt="Pacific Ocean">
+              </div>
+              <div class="ocean-card-body">
+                <h3 class="ocean-name">Pacific Ocean</h3>
+                <div class="ocean-area">165.25M km² • Largest</div>
+                <p class="ocean-snippet">Home to the Mariana Trench, the Ring of Fire, and thousands of tropical
+                  archipelagos.</p>
+                <div class="ocean-card-action">
+                  <span data-i18n="ocean_btn_explore">Explore Facts</span> &rarr;
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Atlantic -->
+            <div class="ocean-card" data-ocean="atlantic">
+              <div class="ocean-card-thumb">
+                <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=600&q=80"
+                  alt="Atlantic Ocean">
+              </div>
+              <div class="ocean-card-body">
+                <h3 class="ocean-name">Atlantic Ocean</h3>
+                <div class="ocean-area">106.46M km² • 2nd Largest</div>
+                <p class="ocean-snippet">Bisected by the 16,000 km Mid-Atlantic Ridge and home to the boundless Sargasso
+                  Sea.</p>
+                <div class="ocean-card-action">
+                  <span data-i18n="ocean_btn_explore">Explore Facts</span> &rarr;
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Indian -->
+            <div class="ocean-card" data-ocean="indian">
+              <div class="ocean-card-thumb">
+                <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80"
+                  alt="Indian Ocean">
+              </div>
+              <div class="ocean-card-body">
+                <h3 class="ocean-name">Indian Ocean</h3>
+                <div class="ocean-area">70.56M km² • Warmest</div>
+                <p class="ocean-snippet">Dominated by dynamic monsoon shifts, home to vibrant coral atolls and
+                  coelacanth fossils.</p>
+                <div class="ocean-card-action">
+                  <span data-i18n="ocean_btn_explore">Explore Facts</span> &rarr;
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. Southern -->
+            <div class="ocean-card" data-ocean="southern">
+              <div class="ocean-card-thumb">
+                <img src="https://images.unsplash.com/photo-1498855926480-d98e83099315?auto=format&fit=crop&w=600&q=80"
+                  alt="Southern Ocean">
+              </div>
+              <div class="ocean-card-body">
+                <h3 class="ocean-name">Southern Ocean</h3>
+                <div class="ocean-area">20.33M km² • Circumpolar</div>
+                <p class="ocean-snippet">Encircles Antarctica with fierce westerly winds and the planet's greatest
+                  carbon sink.</p>
+                <div class="ocean-card-action">
+                  <span data-i18n="ocean_btn_explore">Explore Facts</span> &rarr;
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. Arctic -->
+            <div class="ocean-card" data-ocean="arctic">
+              <div class="ocean-card-thumb">
+                <img src="https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?auto=format&fit=crop&w=600&q=80"
+                  alt="Arctic Ocean">
+              </div>
+              <div class="ocean-card-body">
+                <h3 class="ocean-name">Arctic Ocean</h3>
+                <div class="ocean-area">14.06M km² • Shallowest</div>
+                <p class="ocean-snippet">Capped by perennial sea ice, populated by narwhals, belugas, and polar marine
+                  biodiversity.</p>
+                <div class="ocean-card-action">
+                  <span data-i18n="ocean_btn_explore">Explore Facts</span> &rarr;
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- INTERACTIVE OCEAN DEPTH EXPLORER SECTION -->
+        <section class="depth-explorer-section" id="depth-explorer">
+          <div class="section-header" style="margin-bottom: 2rem;">
+            <span class="section-tag" data-i18n="depth_section_tag">Vertical Stratification</span>
+            <h2 class="section-title" data-i18n="depth_section_title">OCEAN DEPTH EXPLORER</h2>
+            <p class="section-desc" data-i18n="depth_section_desc">Descend through the five vertical ocean zones. Watch the ambient illumination decrease, hydrostatic pressure escalate, and exotic deep-sea adaptations emerge.</p>
+          </div>
+
+          <div class="depth-explorer-layout">
+            <!-- Left: Zone Stepper / Navigation -->
+            <div class="depth-nav-list">
+              <div class="depth-nav-item active" data-zone="sunlight">
+                <div class="depth-nav-marker"></div>
+                <div class="depth-nav-info">
+                  <div class="depth-nav-name">Sunlight Zone</div>
+                  <div class="depth-nav-range">0 – 200 m (Epipelagic)</div>
+                </div>
+              </div>
+
+              <div class="depth-nav-item" data-zone="twilight">
+                <div class="depth-nav-marker"></div>
+                <div class="depth-nav-info">
+                  <div class="depth-nav-name">Twilight Zone</div>
+                  <div class="depth-nav-range">200 – 1,000 m (Mesopelagic)</div>
+                </div>
+              </div>
+
+              <div class="depth-nav-item" data-zone="midnight">
+                <div class="depth-nav-marker"></div>
+                <div class="depth-nav-info">
+                  <div class="depth-nav-name">Midnight Zone</div>
+                  <div class="depth-nav-range">1,000 – 4,000 m (Bathypelagic)</div>
+                </div>
+              </div>
+
+              <div class="depth-nav-item" data-zone="abyssal">
+                <div class="depth-nav-marker"></div>
+                <div class="depth-nav-info">
+                  <div class="depth-nav-name">Abyssal Zone</div>
+                  <div class="depth-nav-range">4,000 – 6,000 m (Abyssopelagic)</div>
+                </div>
+              </div>
+
+              <div class="depth-nav-item" data-zone="hadal">
+                <div class="depth-nav-marker"></div>
+                <div class="depth-nav-info">
+                  <div class="depth-nav-name">Hadal Zone</div>
+                  <div class="depth-nav-range">6,000 – 11,000 m (Hadopelagic)</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Dynamic Depth Visual Display Card -->
+            <div class="depth-display-card" id="depth-display-card" data-zone="sunlight">
+              <div class="depth-card-header">
+                <div>
+                  <h3 class="depth-zone-title" id="depth-zone-title">Sunlight Zone</h3>
+                  <p class="depth-scientific-name" id="depth-scientific-name">Epipelagic Zone</p>
+                </div>
+                <div class="depth-gauges">
+                  <div class="gauge-item">
+                    <div class="gauge-label" data-i18n="gauge_range">Depth Range</div>
+                    <div class="gauge-value" id="depth-range-gauge">0 – 200 m</div>
+                  </div>
+                  <div class="gauge-item">
+                    <div class="gauge-label" data-i18n="gauge_light">Illumination</div>
+                    <div class="gauge-value" id="depth-light-gauge">100% Full Sun</div>
+                  </div>
+                  <div class="gauge-item">
+                    <div class="gauge-label" data-i18n="gauge_pressure">Pressure</div>
+                    <div class="gauge-value" id="depth-pressure-gauge">1 to 20 atm</div>
+                  </div>
+                  <div class="gauge-item">
+                    <div class="gauge-label" data-i18n="gauge_temp">Temperature</div>
+                    <div class="gauge-value" id="depth-temp-gauge">20°C to 28°C</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="depth-card-content">
+                <p class="depth-card-desc" id="depth-card-desc">
+                  The sunlit top layer where photosynthesis occurs. Although it represents less than 5% of the ocean’s
+                  total depth, over 90% of all marine life thrives here, including extensive coral reefs, dolphins, sea
+                  turtles, and massive schools of fish.
+                </p>
+
+                <div class="depth-creatures-title" data-i18n="depth_creatures_label">Signature Marine Organisms In This Zone:</div>
+                <div class="depth-creatures-tags" id="depth-creatures-tags">
+                  <span class="creature-tag">Bottlenose Dolphins</span>
+                  <span class="creature-tag">Sea Turtles</span>
+                  <span class="creature-tag">Clownfish</span>
+                  <span class="creature-tag">Staghorn Corals</span>
+                  <span class="creature-tag">Tuna</span>
+                  <span class="creature-tag">Whale Sharks</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- Ocean Details Modal Backdrop -->
+    <div class="ocean-modal-backdrop" id="ocean-modal-backdrop">
+      <div class="ocean-modal-card">
+        <div class="ocean-modal-header">
+          <button class="ocean-modal-close" id="ocean-modal-close" aria-label="Close modal">&times;</button>
+          <img src="" id="modal-ocean-img" alt="Ocean basin photograph">
+          <div class="ocean-modal-header-content">
+            <h3 class="ocean-modal-title" id="modal-ocean-title">Pacific Ocean</h3>
+            <p class="ocean-modal-subtitle" id="modal-ocean-sub">Largest Ocean on Planet Earth</p>
+          </div>
+        </div>
+
+        <div class="ocean-modal-body">
+          <div class="ocean-modal-stats-grid">
+            <div class="ocean-modal-stat">
+              <div class="ocean-modal-stat-label">Surface Area</div>
+              <div class="ocean-modal-stat-value" id="modal-ocean-area">165M km²</div>
+            </div>
+            <div class="ocean-modal-stat">
+              <div class="ocean-modal-stat-label">Maximum Depth</div>
+              <div class="ocean-modal-stat-value" id="modal-ocean-maxdepth">10,994 m</div>
+            </div>
+            <div class="ocean-modal-stat">
+              <div class="ocean-modal-stat-label">Average Depth</div>
+              <div class="ocean-modal-stat-value" id="modal-ocean-avgdepth">4,280 m</div>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="ocean-modal-section-title">📍 Geographic Location & Boundaries</h4>
+            <p class="ocean-modal-text" id="modal-ocean-location"></p>
+          </div>
+
+          <div>
+            <h4 class="ocean-modal-section-title">🐋 Key Marine Inhabitants</h4>
+            <p class="ocean-modal-text" id="modal-ocean-creatures"></p>
+          </div>
+
+          <div>
+            <h4 class="ocean-modal-section-title">🌊 Unique Oceanographic Characteristics</h4>
+            <p class="ocean-modal-text" id="modal-ocean-characteristics"></p>
+          </div>
+
+          <div>
+            <h4 class="ocean-modal-section-title">💡 Fascinating Scientific Facts</h4>
+            <ul class="detail-facts-list" id="modal-ocean-facts"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Global Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-top">
+          <div>
+            <a href="index.html" class="nav-brand">
+              <div class="brand-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M2 12h20M2 17h20M2 7h20"></path>
+                </svg>
+              </div>
+              <span class="brand-text" data-i18n="nav_brand_title">OCEAN LIFE</span>
+            </a>
+            <p class="footer-brand-desc">
+              Dedicated to illuminating the mysteries of the oceanic depths, celebrating marine biodiversity, and
+              driving global ocean preservation.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="footer-title">Navigation</h4>
+            <ul class="footer-links">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About The Ocean</a></li>
+              <li><a href="marine-life.html">Marine Life Gallery</a></li>
+              <li><a href="explorer.html">Ocean Explorer</a></li>
+              <li><a href="login.html">Member Login</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-title">Ocean Zones</h4>
+            <ul class="footer-links">
+              <li><a href="about.html#depth-explorer">Sunlight Zone (0-200m)</a></li>
+              <li><a href="about.html#depth-explorer">Twilight Zone (200-1000m)</a></li>
+              <li><a href="about.html#depth-explorer">Midnight Zone (1000-4000m)</a></li>
+              <li><a href="about.html#depth-explorer">Abyssal Zone (4000-6000m)</a></li>
+              <li><a href="about.html#depth-explorer">Hadal Zone (Trenches)</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-title">Data Providers</h4>
+            <div class="footer-api-tags">
+              <span>GBIF</span>
+              <span>iNaturalist</span>
+              <span>NOAA</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 OCEAN LIFE &ndash; Explore the Unknown.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Back to top button -->
+    <button id="back-to-top" aria-label="Back to top">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="12" y1="19" x2="12" y2="5"></line>
+        <polyline points="5 12 12 5 19 12"></polyline>
+      </svg>
+    </button>
+
+    <div id="toast-container"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/underwater.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/about.js"></script>
+</body>
+
+</html>

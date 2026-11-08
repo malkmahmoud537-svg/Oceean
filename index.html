@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCEAN LIFE – Explore the Unknown</title>
+  <meta name="description"
+    content="Discover the hidden wonders of our oceans, meet extraordinary marine creatures, and explore the secrets of the underwater world.">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <!-- Favicon / Icon -->
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f0ff'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z'/></svg>">
+</head>
+
+<body>
+
+  <!-- Persistent Route Loading Progress Bar -->
+  <div id="route-progress-bar"></div>
+
+  <!-- Permanent Animated Underwater Background (Fixed across ALL pages) -->
+  <div id="underwater-container">
+    <canvas id="underwater-canvas"></canvas>
+    <div class="water-caustics-overlay"></div>
+    <div class="underwater-vignette"></div>
+  </div>
+
+  <div id="app-wrapper">
+
+    <!-- Fixed Glassmorphic Navigation Bar -->
+    <header class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12h20M2 17h20M2 7h20"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </div>
+          <div>
+            <span class="brand-text" data-i18n="nav_brand_title">OCEAN LIFE</span>
+            <span class="brand-tag" data-i18n="nav_brand_tag">Explore The Deep</span>
+          </div>
+        </a>
+
+        <nav>
+          <ul class="nav-menu" id="nav-menu">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link home-icon-link active" title="Return to Home">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span data-i18n="nav_home">Home</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="about.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span data-i18n="nav_about">About Ocean</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="marine-life.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M12 2a10 10 0 0 0-7.07 17.07C7.4 21.6 12 22 12 22s4.6-.4 7.07-2.93A10 10 0 0 0 12 2z"></path>
+                  <path d="M12 6v6l4 2"></path>
+                </svg>
+                <span data-i18n="nav_marine">Marine Life</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="explorer.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <polygon points="12 2 19 21 12 17 5 21 12 2"></polygon>
+                </svg>
+                <span data-i18n="nav_explorer">Ocean Explorer</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="login.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span data-i18n="nav_login">Login</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <!-- Ambient Sound Toggle -->
+          <button id="sound-toggle-btn" class="sound-toggle-btn" aria-label="Toggle ambient underwater sound">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+              <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path>
+              <path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+              <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+          </button>
+
+          <!-- Theme Mode Switcher -->
+          <button class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle Light/Dark Theme">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+
+          <!-- Language Switcher (EN <-> AR) -->
+          <button class="lang-toggle-btn" aria-label="Toggle language" title="Switch Language">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+              </path>
+            </svg>
+            <span class="lang-btn-label">عربي</span>
+          </button>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button class="mobile-nav-toggle" aria-label="Open mobile menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Dynamic Content (Swapped seamlessly without restarting background) -->
+    <main id="main-content">
+
+      <!-- HERO SECTION -->
+      <section class="hero-section">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="section-tag">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="12 8 8 12 12 16 16 12 12 8"></polygon>
+              </svg>
+              <span data-i18n="hero_tag">The Final Planetary Frontier</span>
+            </span>
+          </div>
+
+          <h1 class="hero-title">
+            <span data-i18n="hero_title_1">DIVE INTO THE</span> <span class="glow-cyan animated-gradient-text"
+              data-i18n="hero_title_2">UNKNOWN</span>
+          </h1>
+
+          <p class="hero-subtitle" data-i18n="hero_subtitle">
+            Discover the hidden wonders of our oceans, meet extraordinary marine creatures, and explore the secrets of
+            the underwater world.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="explorer.html" class="btn btn-primary btn-lg btn-glow">
+              <span data-i18n="hero_btn_explore">Explore the Ocean</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+            <a href="marine-life.html" class="btn btn-secondary btn-lg">
+              <span data-i18n="hero_btn_marine">Discover Marine Life</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path>
+              </svg>
+            </a>
+          </div>
+
+          <a href="#features" class="scroll-indicator">
+            <div class="scroll-mouse">
+              <div class="scroll-wheel"></div>
+            </div>
+            <span data-i18n="hero_scroll">Scroll Down to Discover</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- LIVE OCEAN TELEMETRY TICKER (REAL API) -->
+      <section class="live-api-ticker-section">
+        <div class="live-ticker-box">
+          <div class="live-indicator">
+            <span class="live-dot"></span>
+            <span data-i18n="ticker_live">Live Oceanographic Satellite Telemetry</span>
+          </div>
+          <div class="ticker-text" id="home-live-ticker-text">
+            Connecting to marine sensors for wave heights, surface temperature & salinity...
+          </div>
+          <div class="ticker-badge" data-i18n="ticker_source">Real-Time NOAA & Open-Meteo</div>
+        </div>
+      </section>
+
+      <!-- THREE INTERACTIVE CARDS -->
+      <section class="features-section" id="features">
+        <div class="section-header">
+          <span class="section-tag" data-i18n="cards_section_tag">Interactive Pathways</span>
+          <h2 class="section-title"><span data-i18n="cards_section_title">CHOOSE YOUR DESCENT</span></h2>
+          <p class="section-desc" data-i18n="cards_section_desc">
+            Embark on a voyage across five global oceans, encounter magnificent pelagic wildlife, and champion the vital
+            ecological movement to preserve our marine biospheres.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <!-- Card 1 -->
+          <a href="about.html" class="feature-card">
+            <div>
+              <div class="feature-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path
+                    d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                  </path>
+                </svg>
+              </div>
+              <h3 class="feature-card-title" data-i18n="card_1_title">Discover Ocean Life</h3>
+              <p class="feature-card-desc" data-i18n="card_1_desc">
+                Uncover the physics, depth zones, and geological wonders of the 5 planetary oceans, from sunlit shallows
+                to the crushing abyss.
+              </p>
+            </div>
+            <div class="feature-card-link">
+              <span data-i18n="card_1_btn">Enter The World Beneath</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </a>
+
+          <!-- Card 2 -->
+          <a href="marine-life.html" class="feature-card">
+            <div>
+              <div class="feature-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path
+                    d="M6.5 12c.94-2.07 3.08-3.5 5.5-3.5s4.56 1.43 5.5 3.5c-.94 2.07-3.08 3.5-5.5 3.5s-4.56-1.43-5.5-3.5z">
+                  </path>
+                  <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"></path>
+                </svg>
+              </div>
+              <h3 class="feature-card-title" data-i18n="card_2_title">Explore Marine Creatures</h3>
+              <p class="feature-card-desc" data-i18n="card_2_desc">
+                Browse our comprehensive scientific biodiversity catalog featuring real-time wild observations from the
+                global iNaturalist & GBIF databases.
+              </p>
+            </div>
+            <div class="feature-card-link">
+              <span data-i18n="card_2_btn">View Creatures Gallery</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </a>
+
+          <!-- Card 3 -->
+          <a href="explorer.html" class="feature-card">
+            <div>
+              <div class="feature-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  <path d="M12 8v4"></path>
+                  <path d="M12 16h.01"></path>
+                </svg>
+              </div>
+              <h3 class="feature-card-title" data-i18n="card_3_title">Protect Our Oceans</h3>
+              <p class="feature-card-desc" data-i18n="card_3_desc">
+                Take the interactive pollution challenge, test your recycling instincts in the waste sorting simulation,
+                and commit to life-saving conservation pledges.
+              </p>
+            </div>
+            <div class="feature-card-link">
+              <span data-i18n="card_3_btn">Start Ocean Defense</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- ANIMATED OCEAN STATISTICS SECTION -->
+      <section class="stats-section">
+        <div class="section-header">
+          <span class="section-tag" data-i18n="stats_tag">Empirical Measurements</span>
+          <h2 class="section-title"><span data-i18n="stats_title">THE BLUE HEART OF OUR PLANET</span></h2>
+          <p class="section-desc" data-i18n="stats_desc">Real oceanographic data documenting the scale and mystery of
+            our global waters.</p>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" data-target="242000" data-suffix="+">0</div>
+            <div class="stat-label" data-i18n="stat_species">Known Marine Species</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" data-target="71" data-suffix="%">0</div>
+            <div class="stat-label" data-i18n="stat_coverage">Earth's Surface Covered</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" data-target="5" data-suffix=" Oceans">0</div>
+            <div class="stat-label" data-i18n="stat_oceans">Global Ocean Basins</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" data-target="3682" data-suffix=" m">0</div>
+            <div class="stat-label" data-i18n="stat_depth">Average Depth of Waters</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Global Glassmorphism Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-top">
+          <div>
+            <a href="index.html" class="nav-brand">
+              <div class="brand-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M2 12h20M2 17h20M2 7h20"></path>
+                </svg>
+              </div>
+              <span class="brand-text">OCEAN LIFE</span>
+            </a>
+            <p class="footer-brand-desc">
+              Dedicated to illuminating the mysteries of the oceanic depths, celebrating marine biodiversity, and
+              driving global ocean preservation.
+            </p>
+            <div class="footer-quote">
+              "The sea, once it casts its spell, holds one in its net of wonder forever."
+              <span class="footer-quote-author">— Jacques-Yves Cousteau</span>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="footer-title">Navigation</h4>
+            <ul class="footer-links">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About The Ocean</a></li>
+              <li><a href="marine-life.html">Marine Life Gallery</a></li>
+              <li><a href="explorer.html">Ocean Explorer</a></li>
+              <li><a href="login.html">Member Login</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-title">Ocean Zones</h4>
+            <ul class="footer-links">
+              <li><a href="about.html#depth-explorer">Sunlight Zone (0-200m)</a></li>
+              <li><a href="about.html#depth-explorer">Twilight Zone (200-1000m)</a></li>
+              <li><a href="about.html#depth-explorer">Midnight Zone (1000-4000m)</a></li>
+              <li><a href="about.html#depth-explorer">Abyssal Zone (4000-6000m)</a></li>
+              <li><a href="about.html#depth-explorer">Hadal Zone (Trenches)</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-title">API Integrations</h4>
+            <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.6; margin-bottom:1rem;">
+              Powered by real-time open scientific endpoints:
+            </p>
+            <div class="footer-api-tags">
+              <span>iNaturalist</span>
+              <span>GBIF</span>
+              <span>Open-Meteo</span>
+              <span>NOAA</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 OCEAN LIFE &ndash; Explore the Unknown. Crafted for ocean conservation and scientific literacy.
+          </p>
+          <div style="display:flex; gap:1rem;">
+            <span>Persistent Underwater Engine Active</span>
+            <span>All Oceans Connected</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Back to top button -->
+    <button id="back-to-top" aria-label="Back to top">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="12" y1="19" x2="12" y2="5"></line>
+        <polyline points="5 12 12 5 19 12"></polyline>
+      </svg>
+    </button>
+
+    <!-- Global Toast Container -->
+    <div id="toast-container"></div>
+
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/underwater.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>

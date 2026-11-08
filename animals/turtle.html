@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Green Sea Turtle (Chelonia mydas) – Marine Species Profile | OCEAN LIFE</title>
+  <meta name="description" content="Explore the biological classification, natal homing navigation, seagrass grazing diet, and conservation status of the Green Sea Turtle.">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/marine.css">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f0ff'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z'/></svg>">
+</head>
+<body>
+
+  <div id="route-progress-bar"></div>
+
+  <div id="underwater-container">
+    <canvas id="underwater-canvas"></canvas>
+    <div class="water-caustics-overlay"></div>
+    <div class="underwater-vignette"></div>
+  </div>
+
+  <div id="app-wrapper">
+
+    <header class="navbar">
+      <div class="nav-container">
+        <a href="../index.html" class="nav-brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M2 12h20M2 17h20M2 7h20"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </div>
+          <div>
+            <span class="brand-text" data-i18n="nav_brand_title">OCEAN LIFE</span>
+            <span class="brand-tag" data-i18n="nav_brand_tag">Explore The Deep</span>
+          </div>
+        </a>
+
+        <nav>
+          <ul class="nav-menu" id="nav-menu">
+            <li class="nav-item"><a href="../index.html" class="nav-link home-icon-link">Home</a></li>
+            <li class="nav-item"><a href="../about.html" class="nav-link">About Ocean</a></li>
+            <li class="nav-item"><a href="../marine-life.html" class="nav-link active">Marine Life</a></li>
+            <li class="nav-item"><a href="../explorer.html" class="nav-link">Ocean Explorer</a></li>
+            <li class="nav-item"><a href="../login.html" class="nav-link">Login</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <button id="sound-toggle-btn" class="sound-toggle-btn" aria-label="Toggle ambient underwater sound">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+              <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path>
+            </svg>
+          </button>
+          
+          <!-- Theme Mode Switcher -->
+          <button class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle Light/Dark Theme">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+
+          <!-- Language Switcher (EN <-> AR) -->
+          <button class="lang-toggle-btn" aria-label="Toggle language" title="Switch Language">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            <span class="lang-btn-label">عربي</span>
+          </button>
+
+          <button class="mobile-nav-toggle" aria-label="Open mobile menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <div class="animal-detail-container" data-scientific-name="Chelonia mydas" data-common-name="Green Sea Turtle">
+
+        <div class="detail-nav-bar">
+          <ul class="breadcrumb-list">
+            <li><a href="../index.html">Home</a></li>
+            <li class="breadcrumb-separator">/</li>
+            <li><a href="../marine-life.html">Marine Life</a></li>
+            <li class="breadcrumb-separator">/</li>
+            <li class="breadcrumb-current">Green Sea Turtle</li>
+          </ul>
+
+          <a href="../marine-life.html" class="back-to-gallery-btn">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span data-i18n="btn_back_gallery">Back to Marine Gallery</span>
+          </a>
+        </div>
+
+        <section class="animal-detail-hero">
+          <div class="detail-image-showcase">
+            <img src="https://images.unsplash.com/photo-1518467166778-b88f373ffec7?auto=format&fit=crop&w=1200&q=80" alt="Green Sea Turtle gliding through turquoise lagoon">
+          </div>
+
+          <div class="detail-hero-content">
+            <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.75rem;">
+              <span class="badge badge-cyan">Marine Reptile (Chelonioidea)</span>
+              <span class="badge badge-danger">IUCN: Endangered</span>
+            </div>
+
+            <h1 class="detail-animal-common-name">Green Sea Turtle</h1>
+            <p class="detail-animal-scientific-name">Chelonia mydas &bull; Pacific & Atlantic Green Turtle</p>
+
+            <div class="taxonomy-card">
+              <h3 class="taxonomy-title">Scientific Classification</h3>
+              <div class="taxonomy-grid">
+                <div class="taxonomy-row"><span class="taxonomy-rank">Kingdom:</span><span class="taxonomy-val">Animalia</span></div>
+                <div class="taxonomy-row"><span class="taxonomy-rank">Phylum:</span><span class="taxonomy-val">Chordata</span></div>
+                <div class="taxonomy-row"><span class="taxonomy-rank">Class:</span><span class="taxonomy-val">Reptilia</span></div>
+                <div class="taxonomy-row"><span class="taxonomy-rank">Order:</span><span class="taxonomy-val">Testudines</span></div>
+                <div class="taxonomy-row"><span class="taxonomy-rank">Family:</span><span class="taxonomy-val">Cheloniidae</span></div>
+                <div class="taxonomy-row"><span class="taxonomy-rank">Genus:</span><span class="taxonomy-val">Chelonia</span></div>
+              </div>
+            </div>
+
+            <p style="color:var(--text-light); line-height:1.7; font-size:1rem;">
+              Ancient marine wanderers that have plied Earth’s oceans for over 110 million years, outliving the dinosaurs and maintaining the health of coastal seagrass meadows.
+            </p>
+          </div>
+        </section>
+
+        <div class="detail-stats-row">
+          <div class="detail-stat-pill">
+            <div class="detail-stat-label" data-i18n="detail_stats_habitat">Habitat</div>
+            <div class="detail-stat-value">Tropical Reefs & Bays</div>
+          </div>
+          <div class="detail-stat-pill">
+            <div class="detail-stat-label">Adult Diet</div>
+            <div class="detail-stat-value">Herbivore (Seagrass)</div>
+          </div>
+          <div class="detail-stat-pill">
+            <div class="detail-stat-label" data-i18n="detail_stats_lifespan">Average Lifespan</div>
+            <div class="detail-stat-value">70 – 80+ Years</div>
+          </div>
+          <div class="detail-stat-pill">
+            <div class="detail-stat-label">Adult Weight</div>
+            <div class="detail-stat-value">130 – 200 kg</div>
+          </div>
+        </div>
+
+        <div class="detail-content-grid">
+          <div class="detail-main-info">
+            <div class="detail-section-block">
+              <h3 class="detail-section-heading">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
+                Physical Characteristics & Green Fat
+              </h3>
+              <p class="detail-section-text">
+                Contrary to popular belief, their name does not come from their outer shell (carapace), which is typically olive-brown or mottled amber, but from the distinct emerald green color of their subdermal fat tissue. This pigmentation is caused by their strictly herbivorous adult diet of seagrass and marine macro-algae. Their streamlined heart-shaped shell and paddle-shaped flippers allow them to swim gracefully for thousands of miles.
+              </p>
+            </div>
+
+            <div class="detail-section-block">
+              <h3 class="detail-section-heading">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path></svg>
+                Natal Homing & Ocean Navigation
+              </h3>
+              <p class="detail-section-text">
+                One of nature's greatest navigational feats: mature females migrate thousands of nautical miles across open oceans to return to the precise beach where they hatched decades earlier. They accomplish this by reading the geomagnetic signatures of Earth's magnetic field (geomagnetic imprinting). Females crawl ashore under cover of darkness to dig a deep flask-shaped nest and deposit 100 to 120 spherical eggs.
+              </p>
+            </div>
+
+            <div class="detail-section-block">
+              <h3 class="detail-section-heading">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                Fascinating Biological Facts
+              </h3>
+              <ul class="detail-facts-list">
+                <li><strong>Temperature-Dependent Sex Determination:</strong> The temperature of the sand determines the sex of the hatchlings ("Cool dudes, hot babes"). Sand temperatures above 29.1°C produce females, while cooler sands produce males.</li>
+                <li><strong>Marathon Freedivers:</strong> While sleeping underwater wedged beneath coral ledges, sea turtles can slow their heart rate to one beat every several minutes and hold their breath for up to 5 hours.</li>
+                <li><strong>Seagrass Gardeners:</strong> By grazing on the tips of seagrass blades, turtles stimulate new shoots, maintaining the productive nurseries essential for shrimp, lobsters, and reef fish.</li>
+              </ul>
+
+              <div class="threat-box">
+                <div class="threat-box-title">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  </svg>
+                  <span>Severe Modern Threats & Plastic Ingestion</span>
+                </div>
+                <p style="font-size:0.9rem; color:var(--text-light); line-height:1.6;">
+                  Over 52% of all sea turtles worldwide have ingested synthetic plastic waste, mistaking buoyant plastic shopping bags for jellyfish. Rising sand temperatures driven by global warming are causing catastrophic feminization of rookeries (in Australia's northern Great Barrier Reef, over 99% of new green turtle hatchlings are now female). Entanglement in commercial shrimp trawl nets and coastal artificial light pollution disorienting newly emerged hatchlings exacerbate their extinction risk.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="live-sightings-card">
+              <div class="live-sightings-header">
+                <div>
+                  <h3 class="live-sightings-title">Recent Field Sightings</h3>
+                  <p style="font-size:0.75rem; color:var(--text-muted);" data-i18n="detail_sightings_sub">Real-world research observations</p>
+                </div>
+                <span class="api-source-badge">iNaturalist API</span>
+              </div>
+              <div class="sightings-feed" id="live-sightings-feed"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-bottom">
+          <p>&copy; 2026 OCEAN LIFE &ndash; Scientific Marine Species Archive.</p>
+        </div>
+      </div>
+    </footer>
+
+    <button id="back-to-top" aria-label="Back to top">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="12" y1="19" x2="12" y2="5"></line>
+        <polyline points="5 12 12 5 19 12"></polyline>
+      </svg>
+    </button>
+  </div>
+
+  <script src="../js/underwater.js"></script>
+  <script src="../js/audio.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/theme.js"></script>
+  <script src="../js/i18n.js"></script>
+  <script src="../js/navigation.js"></script>
+  <script src="../js/animal-detail.js"></script>
+</body>
+</html>
+
